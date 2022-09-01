@@ -33,8 +33,16 @@ const RecipientSchema = new mongoose.Schema({
   },
   countryOfResidence: {
     type: String,
+    enum: {
+      values: ["Botswana", "Zimbabwe", "United Kingdom", "South Africa"],
+      message: "{VALUE} is not supported",
+    },
     required: [true, "must provide country Of residence"],
     trim: true,
+  },
+  createdAt: {
+    type: Date,
+    default: Date.now(),
   },
 });
 

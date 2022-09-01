@@ -5,6 +5,8 @@ const notFound = require('./middleware/not-found');
 const errorHandlerMiddleware = require('./middleware/error-handler');
 
 require('dotenv').config();
+require('express-async-errors');
+
 const app = express();
 
 const port = process.env.PORT || 5000;
