@@ -6,6 +6,7 @@ const getAllRecipients = async (req, res) => {
   const recipients = await Recipient.find({ createdBy: req.customer.customerId }).sort('createdAt')
   res.status(StatusCodes.OK).json({ recipients, count: recipients.length })
 }
+
 const getRecipient = async (req, res) => {
   const {
     customer: { customerId },

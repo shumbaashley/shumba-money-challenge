@@ -5,7 +5,7 @@ const jwt = require('jsonwebtoken')
 const CustomerSchema = new mongoose.Schema({
   firstName: {
     type: String,
-    required: [true, "must provide first name"],
+    required: [true, "Please provide first name"],
     trim: true,
   },
   middleName: {
@@ -15,7 +15,7 @@ const CustomerSchema = new mongoose.Schema({
   },
   lastName: {
     type: String,
-    required: [true, "must provide last name"],
+    required: [true, "Please provide last name"],
     trim: true,
   },
   phoneNumber: {
@@ -26,10 +26,10 @@ const CustomerSchema = new mongoose.Schema({
   countryOfResidence: {
     type: String,
     enum: {
-      values: ["Botswana", "Zimbabwe", "United Kingdom", "South Africa"],
+      values: ["Australia", "Canada", "United Kingdom", "Botswana"],
       message: "{VALUE} is not supported",
     },
-    required: [true, "must provide country Of residence"],
+    required: [true, "Please provide country of residence"],
     trim: true,
   },
   emailAddress: {

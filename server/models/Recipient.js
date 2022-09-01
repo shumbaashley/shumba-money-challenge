@@ -4,7 +4,7 @@ const RecipientSchema = new mongoose.Schema(
   {
     firstName: {
       type: String,
-      required: [true, "must provide first name"],
+      required: [true, "Please provide first name"],
       trim: true,
     },
     middleName: {
@@ -14,17 +14,26 @@ const RecipientSchema = new mongoose.Schema(
     },
     lastName: {
       type: String,
-      required: [true, "must provide last name"],
+      required: [true, "Please provide last name"],
       trim: true,
+    },
+    emailAddress: {
+      type: String,
+      required: false,
+      match: [
+        /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+        'Please provide a valid email',
+      ],
+      unique: true,
     },
     phoneNumber: {
       type: String,
-      required: [true, "must provide phone number"],
+      required: [true, "Please provide phone number"],
       trim: true,
     },
     city: {
       type: String,
-      required: [true, "must provide city"],
+      required: [true, "Please provide city"],
       trim: true,
     },
     countryOfResidence: {
@@ -33,7 +42,7 @@ const RecipientSchema = new mongoose.Schema(
         values: ["Botswana", "Zimbabwe", "United Kingdom", "South Africa"],
         message: "{VALUE} is not supported",
       },
-      required: [true, "must provide country Of residence"],
+      required: [true, "Please provide country of residence"],
       trim: true,
     },
     createdBy: {
