@@ -1,0 +1,26 @@
+{
+  "customer": {
+    "firstName": "*",
+    "middleName": "",
+    "lastName": "*",
+    "email": "*",
+    "countryOfResidence": "*",
+    "phoneNumber": "*",
+    "password": "*"
+  },
+
+  "recipient": {
+    "firstName": "*",
+    "middleName": "",
+    "lastName": "*",
+    "email": "*",
+    "city": ["depends on countryOfResidence"],
+    "countryOfResidence": [
+      "Botswana",
+      "Zimbabwe",
+      "United Kingdom",
+      "South Africa"
+    ],
+    "phoneNumber": "*"
+  }
+}
