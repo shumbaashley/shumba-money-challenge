@@ -1,4 +1,4 @@
-const User = require('../models/User')
+const Customer = require('../models/Customer')
 const jwt = require('jsonwebtoken')
 const { UnauthenticatedError } = require('../errors')
 
@@ -12,8 +12,8 @@ const auth = async (req, res, next) => {
 
   try {
     const payload = jwt.verify(token, process.env.JWT_SECRET)
-    // attach the user to the job routes
-    req.user = { userId: payload.userId, name: payload.name }
+    // attach the customer to the job routes
+    req.customer = { customerId: payload.customerId, firstName: payload.firstName }
     next()
   } catch (error) {
     throw new UnauthenticatedError('Authentication invalid')

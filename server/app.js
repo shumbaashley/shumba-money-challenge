@@ -6,7 +6,7 @@ const express = require('express');
 const app = express();
 
 const connectDB = require('./db/connect');
-const authenticateUser = require('./middleware/authentication');
+const authenticateCustomer = require('./middleware/authentication');
 
 // routers
 const authRouter = require('./routes/auth');
@@ -21,7 +21,7 @@ app.use(cors());
 
 // routes
 app.use('/api/v1/auth', authRouter);
-app.use('/api/v1/recipients', authenticateUser, recipientsRouter);
+app.use('/api/v1/recipients', authenticateCustomer, recipientsRouter);
 
 app.use(notFoundMiddleware);
 app.use(errorHandlerMiddleware);
