@@ -9,7 +9,7 @@ const connectDB = require('./db/connect');
 const authenticateCustomer = require('./middleware/authentication');
 
 // routers
-const authRouter = require('./routes/auth');
+const authRouter = require('./routes/customers');
 const recipientsRouter = require('./routes/recipients');
 
 // error handler

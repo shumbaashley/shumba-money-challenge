@@ -55,7 +55,7 @@ CustomerSchema.pre('save', async function () {
 
 CustomerSchema.methods.createJWT = function () {
   return jwt.sign(
-    { customerId: this._id, firstName: this.firstName },
+    { customerId: this._id, firstName: this.firstName, lastName: this.lastName, emailAddress: this.emailAddress, countryOfResidence: this.countryOfResidence},
     process.env.JWT_SECRET,
     {
       expiresIn: process.env.JWT_LIFETIME,
