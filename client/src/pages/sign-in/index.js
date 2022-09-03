@@ -46,8 +46,8 @@ export default function SignInPage() {
 
         const decodedInfo = jwt_decode(token);
 
-        localStorage.setItem("isLoggedIn", JSON.stringify(true));
-        localStorage.setItem("accessToken", JSON.stringify(token));
+        localStorage.setItem("isLoggedIn", true);
+        localStorage.setItem("accessToken", token);
         localStorage.setItem("userInfo", JSON.stringify(decodedInfo));
 
         setStatus({ success: true });
@@ -153,6 +153,7 @@ export default function SignInPage() {
               type="submit"
               fullWidth
               variant="contained"
+              loading={formik.isSubmitting}
               disabled={formik.isSubmitting}
               sx={{ mt: 3, mb: 2 }}
             >
