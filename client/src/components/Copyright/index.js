@@ -1,4 +1,4 @@
-import { Link, Typography } from "@mui/material";
+import { Typography } from "@mui/material";
 
 export default function Copyright(props) {
   return (
@@ -8,12 +8,8 @@ export default function Copyright(props) {
       align="center"
       {...props}
     >
-      {"Copyright © "}
-      <Link color="inherit" href="https://mui.com/">
-        Your Website
-      </Link>{" "}
-      {new Date().getFullYear()}
-      {"."}
+      {"© "} {new Date().getFullYear()}
+      {" All Rights Reserved"}
     </Typography>
   );
 }
