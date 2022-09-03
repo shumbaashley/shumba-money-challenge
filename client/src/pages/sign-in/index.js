@@ -10,18 +10,18 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import SmilingLionImage from "../../assets/images/Smiling-Lion.jpg";
-import Copyright from "../../components/copyright";
+import Copyright from "../../components/Copyright";
 import { useFormik } from "formik";
 import * as yup from "yup";
 import { useNavigate } from "react-router-dom";
-import axios from '../../utils/axios';
+import axios from "../../utils/axios";
 import handleCustomError from "../../utils/handleCustomError";
-import CustomAlert from "../../components/alert";
+import CustomAlert from "../../components/Alert";
 
 const theme = createTheme();
 
 let validationSchema = yup.object().shape({
-  email: yup.string().email().label("Email Address"),
+  email: yup.string().email().required().label("Email Address"),
   password: yup.string().required().label("Password"),
 });
 
@@ -40,18 +40,21 @@ export default function SignInPage() {
     ) => {
       try {
         const { email, password } = values;
-        const response = await axios.post('/auth/login', {
+        const response = await axios.post("/auth/login", {
           emailAddress: email,
           password,
         });
 
-        localStorage.setItem('isLoggedIn', JSON.stringify(true))
-        localStorage.setItem('accessToken', JSON.stringify(response.data.token))
+        localStorage.setItem("isLoggedIn", JSON.stringify(true));
+        localStorage.setItem(
+          "accessToken",
+          JSON.stringify(response.data.token)
+        );
 
         setStatus({ success: true });
         setSubmitting(false);
         resetForm({});
-        navigate("/");
+        navigate("/dashboard");
       } catch (error) {
         const errorMsg = handleCustomError(error);
         setStatus({ success: false });
@@ -105,7 +108,10 @@ export default function SignInPage() {
             >
               {formik.errors.submit && (
                 <Box sx={{ mt: 3 }}>
-                  <CustomAlert severity={"error"} message={formik.errors.submit}/>
+                  <CustomAlert
+                    severity={"error"}
+                    message={formik.errors.submit}
+                  />
                 </Box>
               )}
               <TextField
@@ -122,9 +128,8 @@ export default function SignInPage() {
                 value={formik.values.email}
                 error={Boolean(formik.touched.email && formik.errors.email)}
                 helperText={
-                  formik.touched.email && formik.errors.email ? (
-                    <div>{formik.errors.email}</div>
-                  ) : null
+                  formik.touched.email &&
+                  formik.errors.email && <div>{formik.errors.email}</div>
                 }
               />
 
@@ -144,9 +149,8 @@ export default function SignInPage() {
                   formik.touched.password && formik.errors.password
                 )}
                 helperText={
-                  formik.touched.password && formik.errors.password ? (
-                    <div>{formik.errors.password}</div>
-                  ) : null
+                  formik.touched.password &&
+                  formik.errors.password && <div>{formik.errors.password}</div>
                 }
               />
               <Button
