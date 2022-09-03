@@ -3,8 +3,6 @@ import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
 import Link from "@mui/material/Link";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
@@ -13,20 +11,51 @@ import Typography from "@mui/material/Typography";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import SmilingLionImage from "../../assets/images/Smiling-Lion.jpg";
 import Copyright from "../../components/copyright";
-
-
+import { useFormik } from "formik";
+import * as yup from "yup";
+import { Alert, AlertTitle } from "@mui/material";
+import { useNavigate } from "react-router-dom";
+import axios from '../../utils/axios';
+import handleAxiosError from "../../utils/handleAxiosError";
 
 const theme = createTheme();
 
+let validationSchema = yup.object().shape({
+  email: yup.string().email().label("Email Address"),
+  password: yup.string().required().label("Password"),
+});
+
 export default function SignInPage() {
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get("email"),
-      password: data.get("password"),
-    });
-  };
+  const navigate = useNavigate();
+
+  const formik = useFormik({
+    initialValues: {
+      email: "",
+      password: "",
+    },
+    validationSchema,
+    onSubmit: async (
+      values,
+      { setErrors, setStatus, setSubmitting, resetForm }
+    ) => {
+      try {
+        const { email, password } = values;
+        await axios.post('/auth/login', {
+          emailAddress: email,
+          password,
+        });
+        setStatus({ success: true });
+        setSubmitting(false);
+        resetForm({});
+        navigate("/");
+      } catch (error) {
+        const errorMsg = handleAxiosError(error);
+        setStatus({ success: false });
+        setErrors({ submit: errorMsg });
+        setSubmitting(false);
+      }
+    },
+  });
 
   return (
     <ThemeProvider theme={theme}>
@@ -48,7 +77,7 @@ export default function SignInPage() {
             backgroundPosition: "center",
           }}
         />
-        <Grid item xs={12} sm={8} md={5} square>
+        <Grid item xs={12} sm={8} md={5}>
           <Box
             sx={{
               my: 8,
@@ -67,9 +96,17 @@ export default function SignInPage() {
             <Box
               component="form"
               noValidate
-              onSubmit={handleSubmit}
+              onSubmit={formik.handleSubmit}
               sx={{ mt: 1 }}
             >
+              {formik.errors.submit && (
+                <Box sx={{ mt: 3 }}>
+                  <Alert severity="error">
+                    <AlertTitle>Error</AlertTitle>
+                    {formik.errors.submit}
+                  </Alert>
+                </Box>
+              )}
               <TextField
                 margin="normal"
                 required
@@ -79,7 +116,17 @@ export default function SignInPage() {
                 name="email"
                 autoComplete="email"
                 autoFocus
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                value={formik.values.email}
+                error={Boolean(formik.touched.email && formik.errors.email)}
+                helperText={
+                  formik.touched.email && formik.errors.email ? (
+                    <div>{formik.errors.email}</div>
+                  ) : null
+                }
               />
+
               <TextField
                 margin="normal"
                 required
@@ -89,15 +136,23 @@ export default function SignInPage() {
                 type="password"
                 id="password"
                 autoComplete="current-password"
-              />
-              <FormControlLabel
-                control={<Checkbox value="remember" color="primary" />}
-                label="Remember me"
+                onChange={formik.handleChange}
+                value={formik.values.password}
+                onBlur={formik.handleBlur}
+                error={Boolean(
+                  formik.touched.password && formik.errors.password
+                )}
+                helperText={
+                  formik.touched.password && formik.errors.password ? (
+                    <div>{formik.errors.password}</div>
+                  ) : null
+                }
               />
               <Button
                 type="submit"
                 fullWidth
                 variant="contained"
+                disabled={formik.isSubmitting}
                 sx={{ mt: 3, mb: 2 }}
               >
                 Sign In
