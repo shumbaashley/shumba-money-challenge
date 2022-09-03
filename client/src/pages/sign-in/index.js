@@ -105,7 +105,7 @@ export default function SignInPage() {
             >
               {formik.errors.submit && (
                 <Box sx={{ mt: 3 }}>
-                  <CustomAlert severity="error" message={formik.errors.submit}/>
+                  <CustomAlert severity={"error"} message={formik.errors.submit}/>
                 </Box>
               )}
               <TextField
