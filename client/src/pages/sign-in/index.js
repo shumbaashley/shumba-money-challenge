@@ -17,6 +17,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "../../utils/axios";
 import handleCustomError from "../../utils/handleCustomError";
 import CustomAlert from "../../components/Alert";
+import jwt_decode from "jwt-decode";
 
 const theme = createTheme();
 
@@ -44,12 +45,13 @@ export default function SignInPage() {
           emailAddress: email,
           password,
         });
+        const { token } = response.data;
+
+        const decodedInfo = jwt_decode(token);
 
         localStorage.setItem("isLoggedIn", JSON.stringify(true));
-        localStorage.setItem(
-          "accessToken",
-          JSON.stringify(response.data.token)
-        );
+        localStorage.setItem("accessToken", JSON.stringify(token));
+        localStorage.setItem("userInfo", JSON.stringify(decodedInfo));
 
         setStatus({ success: true });
         setSubmitting(false);
