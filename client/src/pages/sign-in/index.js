@@ -13,10 +13,10 @@ import SmilingLionImage from "../../assets/images/Smiling-Lion.jpg";
 import Copyright from "../../components/copyright";
 import { useFormik } from "formik";
 import * as yup from "yup";
-import { Alert, AlertTitle } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import axios from '../../utils/axios';
-import handleAxiosError from "../../utils/handleAxiosError";
+import handleCustomError from "../../utils/handleCustomError";
+import CustomAlert from "../../components/alert";
 
 const theme = createTheme();
 
@@ -40,16 +40,20 @@ export default function SignInPage() {
     ) => {
       try {
         const { email, password } = values;
-        await axios.post('/auth/login', {
+        const response = await axios.post('/auth/login', {
           emailAddress: email,
           password,
         });
+
+        localStorage.setItem('isLoggedIn', JSON.stringify(true))
+        localStorage.setItem('accessToken', JSON.stringify(response.data.token))
+
         setStatus({ success: true });
         setSubmitting(false);
         resetForm({});
         navigate("/");
       } catch (error) {
-        const errorMsg = handleAxiosError(error);
+        const errorMsg = handleCustomError(error);
         setStatus({ success: false });
         setErrors({ submit: errorMsg });
         setSubmitting(false);
@@ -101,10 +105,7 @@ export default function SignInPage() {
             >
               {formik.errors.submit && (
                 <Box sx={{ mt: 3 }}>
-                  <Alert severity="error">
-                    <AlertTitle>Error</AlertTitle>
-                    {formik.errors.submit}
-                  </Alert>
+                  <CustomAlert severity="error" message={formik.errors.submit}/>
                 </Box>
               )}
               <TextField

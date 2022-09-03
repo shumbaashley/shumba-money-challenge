@@ -1,4 +1,4 @@
-const handleAxiosError = (error) => {
+const handleCustomError = (error) => {
     if (error.response) {
         if (error.response.data.msg) {
             return error.response.data.msg
@@ -12,4 +12,4 @@ const handleAxiosError = (error) => {
     return `Error : ${error.message}`;
 };
 
-export default handleAxiosError;
+export default handleCustomError;
