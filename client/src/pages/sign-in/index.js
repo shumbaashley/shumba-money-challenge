@@ -8,7 +8,6 @@ import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
 import SmilingLionImage from "../../assets/images/Smiling-Lion.jpg";
 import Copyright from "../../components/Copyright";
 import { useFormik } from "formik";
@@ -18,8 +17,6 @@ import axios from "../../utils/axios";
 import handleCustomError from "../../utils/handleCustomError";
 import CustomAlert from "../../components/Alert";
 import jwt_decode from "jwt-decode";
-
-const theme = createTheme();
 
 let validationSchema = yup.object().shape({
   email: yup.string().email().required().label("Email Address"),
@@ -67,120 +64,116 @@ export default function SignInPage() {
   });
 
   return (
-    <ThemeProvider theme={theme}>
-      <Grid container component="main" sx={{ height: "100vh" }}>
-        <CssBaseline />
-        <Grid
-          item
-          xs={false}
-          sm={4}
-          md={7}
+    <Grid container component="main" sx={{ height: "100vh" }}>
+      <CssBaseline />
+      <Grid
+        item
+        xs={false}
+        sm={4}
+        md={7}
+        sx={{
+          backgroundImage: `url(${SmilingLionImage})`,
+          backgroundRepeat: "no-repeat",
+          backgroundColor: (t) =>
+            t.palette.mode === "light"
+              ? t.palette.grey[50]
+              : t.palette.grey[900],
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+        }}
+      />
+      <Grid item xs={12} sm={8} md={5}>
+        <Box
           sx={{
-            backgroundImage: `url(${SmilingLionImage})`,
-            backgroundRepeat: "no-repeat",
-            backgroundColor: (t) =>
-              t.palette.mode === "light"
-                ? t.palette.grey[50]
-                : t.palette.grey[900],
-            backgroundSize: "cover",
-            backgroundPosition: "center",
+            my: 8,
+            mx: 4,
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
           }}
-        />
-        <Grid item xs={12} sm={8} md={5}>
+        >
+          <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
+            <LockOutlinedIcon />
+          </Avatar>
+          <Typography component="h1" variant="h5">
+            Sign in
+          </Typography>
           <Box
-            sx={{
-              my: 8,
-              mx: 4,
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-            }}
+            component="form"
+            noValidate
+            onSubmit={formik.handleSubmit}
+            sx={{ mt: 1 }}
           >
-            <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
-              <LockOutlinedIcon />
-            </Avatar>
-            <Typography component="h1" variant="h5">
-              Sign in
-            </Typography>
-            <Box
-              component="form"
-              noValidate
-              onSubmit={formik.handleSubmit}
-              sx={{ mt: 1 }}
-            >
-              {formik.errors.submit && (
-                <Box sx={{ mt: 3 }}>
-                  <CustomAlert
-                    severity={"error"}
-                    message={formik.errors.submit}
-                  />
-                </Box>
-              )}
-              <TextField
-                margin="normal"
-                required
-                fullWidth
-                id="email"
-                label="Email Address"
-                name="email"
-                autoComplete="email"
-                autoFocus
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                value={formik.values.email}
-                error={Boolean(formik.touched.email && formik.errors.email)}
-                helperText={
-                  formik.touched.email &&
-                  formik.errors.email && <div>{formik.errors.email}</div>
-                }
-              />
+            {formik.errors.submit && (
+              <Box sx={{ mt: 3 }}>
+                <CustomAlert
+                  severity={"error"}
+                  message={formik.errors.submit}
+                />
+              </Box>
+            )}
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              id="email"
+              label="Email Address"
+              name="email"
+              autoComplete="email"
+              autoFocus
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              value={formik.values.email}
+              error={Boolean(formik.touched.email && formik.errors.email)}
+              helperText={
+                formik.touched.email &&
+                formik.errors.email && <div>{formik.errors.email}</div>
+              }
+            />
 
-              <TextField
-                margin="normal"
-                required
-                fullWidth
-                name="password"
-                label="Password"
-                type="password"
-                id="password"
-                autoComplete="current-password"
-                onChange={formik.handleChange}
-                value={formik.values.password}
-                onBlur={formik.handleBlur}
-                error={Boolean(
-                  formik.touched.password && formik.errors.password
-                )}
-                helperText={
-                  formik.touched.password &&
-                  formik.errors.password && <div>{formik.errors.password}</div>
-                }
-              />
-              <Button
-                type="submit"
-                fullWidth
-                variant="contained"
-                disabled={formik.isSubmitting}
-                sx={{ mt: 3, mb: 2 }}
-              >
-                Sign In
-              </Button>
-              <Grid container>
-                <Grid item xs>
-                  <Link href="#" variant="body2">
-                    Forgot password?
-                  </Link>
-                </Grid>
-                <Grid item>
-                  <Link href="#" variant="body2">
-                    {"Don't have an account? Sign Up"}
-                  </Link>
-                </Grid>
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              name="password"
+              label="Password"
+              type="password"
+              id="password"
+              autoComplete="current-password"
+              onChange={formik.handleChange}
+              value={formik.values.password}
+              onBlur={formik.handleBlur}
+              error={Boolean(formik.touched.password && formik.errors.password)}
+              helperText={
+                formik.touched.password &&
+                formik.errors.password && <div>{formik.errors.password}</div>
+              }
+            />
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              disabled={formik.isSubmitting}
+              sx={{ mt: 3, mb: 2 }}
+            >
+              Sign In
+            </Button>
+            <Grid container>
+              <Grid item xs>
+                <Link href="#" variant="body2">
+                  Forgot password?
+                </Link>
               </Grid>
-              <Copyright sx={{ mt: 5 }} />
-            </Box>
+              <Grid item>
+                <Link href="#" variant="body2">
+                  {"Don't have an account? Sign Up"}
+                </Link>
+              </Grid>
+            </Grid>
+            <Copyright sx={{ mt: 5 }} />
           </Box>
-        </Grid>
+        </Box>
       </Grid>
-    </ThemeProvider>
+    </Grid>
   );
 }
