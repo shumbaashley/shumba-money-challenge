@@ -58,6 +58,16 @@ const cities = [
 
 export default function RecipientForm() {
   const navigate = useNavigate();
+  const [country, setCountry] = React.useState("Botswana");
+  const [city, setCity] = React.useState("Gaborone");
+
+  const handleChangeCountry = (event) => {
+    setCountry(event.target.value);
+  };
+
+  const handleChangeCity = (event) => {
+    setCity(event.target.value);
+  };
 
   const formik = useFormik({
     initialValues: {
@@ -196,8 +206,8 @@ export default function RecipientForm() {
           id="outlined-select-country"
           select
           label="Country of Residence"
-          value={formik.values.countryOfResidence}
-          onChange={formik.handleChange}
+          value={country}
+          onChange={handleChangeCountry}
         >
           {countries.map((option) => (
             <MenuItem key={option.value} value={option.value}>
@@ -209,8 +219,8 @@ export default function RecipientForm() {
           id="outlined-select-city"
           select
           label="City"
-          value={formik.values.city}
-          onChange={formik.handleChange}
+          value={city}
+          onChange={handleChangeCity}
         >
           {cities.map((option) => (
             <MenuItem key={option.value} value={option.value}>
