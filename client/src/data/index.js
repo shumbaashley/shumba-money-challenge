@@ -1,6 +1,6 @@
 const countriesAndCities = [
   {
-    country: "Botswana",
+    name: "Botswana",
     cities: [
       "Francistown",
       "Gaborone",
@@ -82,7 +82,7 @@ const countriesAndCities = [
     ],
   },
   {
-    country: "Zimbabwe",
+    name: "Zimbabwe",
     cities: [
       "Bulawayo",
       "Chinhoyi",
@@ -198,7 +198,7 @@ const countriesAndCities = [
     ],
   },
   {
-    country: "United Kingdom",
+    name: "United Kingdom",
     cities: [
       "Abberton",
       "Abbots Langley",
@@ -5026,7 +5026,7 @@ const countriesAndCities = [
     ],
   },
   {
-    country: "South Africa",
+    name: "South Africa",
     cities: [
       "Alberton",
       "Alice",

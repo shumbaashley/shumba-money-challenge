@@ -1,4 +1,4 @@
-import * as React from "react";
+import { useEffect, useState } from "react";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import { useNavigate } from "react-router-dom";
@@ -7,6 +7,7 @@ import * as yup from "yup";
 import axios from "../../utils/axios";
 import handleCustomError from "../../utils/handleCustomError";
 import { Button, InputAdornment, MenuItem } from "@mui/material";
+import countriesAndCities from "../../data/";
 
 const validationSchema = yup.object().shape({
   firstName: yup.string().required().label("First Name"),
@@ -18,48 +19,25 @@ const validationSchema = yup.object().shape({
   phoneNumber: yup.string().required().label("Phone Number"),
 });
 
-const countries = [
-  {
-    value: "Botswana",
-    label: "Botswana",
-  },
-  {
-    value: "South Africa",
-    label: "South Africa",
-  },
-  {
-    value: "United Kingdom",
-    label: "United Kingdom",
-  },
-  {
-    value: "Zimbabwe",
-    label: "Zimbabwe",
-  },
-];
+const filterCitiesByCountry = (countryName) => {
+  let selectedCountry = countriesAndCities.filter(
+    (country) => country.name === countryName
+  );
 
-const cities = [
-  {
-    value: "Gaborone",
-    label: "Gaborone",
-  },
-  {
-    value: "Cape Town",
-    label: "Cape Town",
-  },
-  {
-    value: "London",
-    label: "London",
-  },
-  {
-    value: "Harare",
-    label: "Harare",
-  },
-];
+  let citiesInSelectedCountry = selectedCountry[0].cities;
+  let filteredCities = citiesInSelectedCountry.map((city) => {
+    return { value: city, label: city };
+  });
+
+  return filteredCities;
+};
 
 export default function RecipientForm() {
   const navigate = useNavigate();
-  const [country, setCountry] = React.useState("Botswana");
-  const [city, setCity] = React.useState("Gaborone");
+  const [countries, setCountries] = useState([]);
+  const [cities, setCities] = useState([]);
+  const [country, setCountry] = useState("");
+  const [city, setCity] = useState("");
 
   const handleChangeCountry = (event) => {
     setCountry(event.target.value);
@@ -68,6 +46,25 @@ export default function RecipientForm() {
   const handleChangeCity = (event) => {
     setCity(event.target.value);
   };
+
+  useEffect(() => {
+    // initialize dropdown values
+    let countryOptions = countriesAndCities.map((country) => {
+      return { value: country.name, label: country.name };
+    });
+    setCountries(countryOptions);
+
+    let cityOptions = filterCitiesByCountry(countryOptions[0].value);
+    setCities(cityOptions);
+
+    let initialCountry = countryOptions[0].value;
+    let initialCity = cityOptions[0].value;
+
+    setCountry(initialCountry);
+    setCity(initialCity);
+
+  }, []);
+
 
   const formik = useFormik({
     initialValues: {
@@ -139,7 +136,6 @@ export default function RecipientForm() {
     >
       <div>
         <TextField
-          defaultValue=""
           id="firstName"
           label="First Name"
           name="firstName"
@@ -153,7 +149,6 @@ export default function RecipientForm() {
           }
         />
         <TextField
-          defaultValue=""
           id="middleName"
           label="Middle Name"
           name="middleName"
@@ -169,7 +164,6 @@ export default function RecipientForm() {
       </div>
       <div>
         <TextField
-          defaultValue=""
           id="lastName"
           label="Last Name"
           name="lastName"
@@ -183,7 +177,6 @@ export default function RecipientForm() {
           }
         />
         <TextField
-          defaultValue=""
           id="emailAddress"
           label="Email Address"
           name="emailAddress"
@@ -231,7 +224,6 @@ export default function RecipientForm() {
       </div>
       <div>
         <TextField
-          defaultValue=""
           id="phoneNumber"
           label="Phone Number"
           name="phoneNumber"
