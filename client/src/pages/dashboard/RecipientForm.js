@@ -8,6 +8,7 @@ import axios from "../../utils/axios";
 import handleCustomError from "../../utils/handleCustomError";
 import { Button, InputAdornment, MenuItem } from "@mui/material";
 import countriesAndCities from "../../data/";
+import getCountryPhoneCode from "../../utils/getCountryPhoneCode";
 
 const validationSchema = yup.object().shape({
   firstName: yup.string().required().label("First Name"),
@@ -38,6 +39,7 @@ export default function RecipientForm() {
   const [cities, setCities] = useState([]);
   const [country, setCountry] = useState("");
   const [city, setCity] = useState("");
+  const [countryPhoneCode, setCountryPhoneCode] = useState("");
 
   const handleChangeCountry = (event) => {
     setCountry(event.target.value);
@@ -63,8 +65,10 @@ export default function RecipientForm() {
     setCountry(initialCountry);
     setCity(initialCity);
 
-  }, []);
+    let phoneCode = getCountryPhoneCode(initialCountry);
 
+    setCountryPhoneCode(phoneCode);
+  }, []);
 
   const formik = useFormik({
     initialValues: {
@@ -232,7 +236,9 @@ export default function RecipientForm() {
           value={formik.values.phoneNumber}
           InputProps={{
             startAdornment: (
-              <InputAdornment position="start">+263</InputAdornment>
+              <InputAdornment position="start">
+                {countryPhoneCode}
+              </InputAdornment>
             ),
           }}
           error={Boolean(
