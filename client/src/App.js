@@ -20,6 +20,7 @@ export default function App() {
           <Route path="/" exact element={<Navigate to="/recipients" replace />} />
           <Route path="recipients" exact element={<DashboardLayout />}>
             <Route path="new" element={<RecipientForm />} />
+            <Route path="edit" element={<RecipientForm />} />
             <Route path=":id" element={<RecipientForm />} />
             <Route path="" element={<RecipientsTable />} />
           </Route>

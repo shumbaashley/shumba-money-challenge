@@ -136,7 +136,8 @@ export default function SignInPage() {
               error={Boolean(formik.touched.email && formik.errors.email)}
               helperText={
                 formik.touched.email &&
-                formik.errors.email && <span>{formik.errors.email}</span>
+                formik.errors.email &&
+                formik.errors.email
               }
             />
 
@@ -146,7 +147,7 @@ export default function SignInPage() {
               fullWidth
               name="password"
               label="Password"
-              type={showPassword ? 'text' : 'password'}
+              type={showPassword ? "text" : "password"}
               id="password"
               autoComplete="current-password"
               onChange={formik.handleChange}
@@ -155,7 +156,8 @@ export default function SignInPage() {
               error={Boolean(formik.touched.password && formik.errors.password)}
               helperText={
                 formik.touched.password &&
-                formik.errors.password && <span>{formik.errors.password}</span>
+                formik.errors.password &&
+                formik.errors.password
               }
               InputProps={{
                 endAdornment: (

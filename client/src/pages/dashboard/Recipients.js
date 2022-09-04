@@ -93,7 +93,7 @@ export default function Recipients() {
       )}
 
       {!loading && recipients.length === 0 && (
-        <Typography component="h2" variant="h6" color="primary" gutterBottom>
+        <Typography  variant="body2"  gutterBottom>
           No recipients available.
         </Typography>
       )}
