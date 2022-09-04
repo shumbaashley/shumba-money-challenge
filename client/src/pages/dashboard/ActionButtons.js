@@ -10,7 +10,7 @@ export default function ActionButtons({ recipient }) {
   const navigate = useNavigate();
 
   const handleClick = () => {
-    navigate(`/recipient/${recipient._id}`);
+    navigate(`/recipients/${recipient._id}`);
   };
   const handleDelete = () => {
     alert("delete");
