@@ -19,7 +19,7 @@ import Copyright from "../../components/Copyright";
 import { Button, Menu, MenuItem } from "@mui/material";
 import Logo from "../../components/Logo";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
-import { Outlet } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 
 const drawerWidth = 240;
 
@@ -70,6 +70,7 @@ const Drawer = styled(MuiDrawer, {
 function DashboardContent() {
   const [open, setOpen] = React.useState(false);
   const [anchorEl, setAnchorEl] = React.useState(null);
+  const navigate = useNavigate();
 
   const toggleDrawer = () => {
     setOpen(!open);
@@ -81,6 +82,12 @@ function DashboardContent() {
 
   const handleClose = () => {
     setAnchorEl(null);
+  };
+
+  const handleLogout = () => {
+    handleClose();
+    localStorage.clear();
+    navigate("/login");
   };
 
   return (
@@ -141,7 +148,7 @@ function DashboardContent() {
               open={Boolean(anchorEl)}
               onClose={handleClose}
             >
-              <MenuItem onClick={handleClose}>Logout</MenuItem>
+              <MenuItem onClick={handleLogout}>Logout</MenuItem>
             </Menu>
           </div>
         </Toolbar>
@@ -180,7 +187,7 @@ function DashboardContent() {
         <Toolbar />
         <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
           <Grid container spacing={3}>
-            <Outlet/>
+            <Outlet />
           </Grid>
           <Copyright sx={{ pt: 4 }} />
         </Container>
