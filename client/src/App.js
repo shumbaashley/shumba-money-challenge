@@ -1,5 +1,10 @@
 import React from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+} from "react-router-dom";
 import SignInSide from "./pages/sign-in";
 import DashboardLayout from "./pages/dashboard/DashboardLayout";
 import PrivateRoutes from "./utils/PrivateRoutes";
@@ -12,6 +17,7 @@ export default function App() {
     <Router>
       <Routes>
         <Route element={<PrivateRoutes />}>
+          <Route path="/" exact element={<Navigate to="/recipients" replace />} />
           <Route path="recipients" exact element={<DashboardLayout />}>
             <Route path="new" element={<RecipientForm />} />
             <Route path=":id" element={<RecipientForm />} />
