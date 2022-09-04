@@ -19,6 +19,8 @@ import { mainListItems } from "./listItems";
 import Recipients from "./Recipients";
 import Copyright from "../../components/Copyright";
 import { Button, Menu, MenuItem } from "@mui/material";
+import Logo from "../../components/Logo";
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 
 const drawerWidth = 240;
 
@@ -113,7 +115,8 @@ function DashboardContent() {
               noWrap
               sx={{ flexGrow: 1 }}
             >
-              Dashboard
+              <Logo />
+
             </Typography>
             <div>
               <Button
@@ -124,6 +127,7 @@ function DashboardContent() {
                 color="inherit"
                 onClick={handleMenu}
                 startIcon={<AccountCircle />}
+                endIcon={<KeyboardArrowDownIcon />}
               >
                 <Typography variant="body2">Ashley Shumba</Typography>
               </Button>
