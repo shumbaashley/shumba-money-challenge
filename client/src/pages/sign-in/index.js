@@ -17,6 +17,7 @@ import axios from "../../utils/axios";
 import handleCustomError from "../../utils/handleCustomError";
 import CustomAlert from "../../components/Alert";
 import jwt_decode from "jwt-decode";
+import Logo from "../../components/Logo";
 
 let validationSchema = yup.object().shape({
   email: yup.string().email().required().label("Email Address"),
@@ -92,9 +93,7 @@ export default function SignInPage() {
             alignItems: "center",
           }}
         >
-          <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
-            <LockOutlinedIcon />
-          </Avatar>
+          <Logo />
           <Typography component="h1" variant="h5">
             Sign in
           </Typography>

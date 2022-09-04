@@ -4,6 +4,7 @@ import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
+import './index.css';
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 const theme = createTheme();
