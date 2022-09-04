@@ -4,7 +4,7 @@ import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-import { Typography } from "@mui/material";
+import { Button, Stack, Typography } from "@mui/material";
 import axios from "../../utils/axios";
 import handleCustomError from "../../utils/handleCustomError";
 import ActionButtons from "./ActionButtons";
@@ -33,9 +33,19 @@ export default function Recipients() {
   }, []);
   return (
     <Fragment>
-      <Typography component="h2" variant="h6" color="primary" gutterBottom>
-        Recipients
-      </Typography>
+      <Stack
+        direction="row"
+        justifyContent="space-between"
+        alignItems="center"
+        spacing={2}
+      >
+        <Typography component="h2" variant="h6" color="primary" gutterBottom>
+          Recipients
+        </Typography>
+        <Button variant="contained" size="small" href="/new-recipient">
+          Add New
+        </Button>
+      </Stack>
       <Table>
         <TableHead>
           <TableRow>
