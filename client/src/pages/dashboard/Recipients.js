@@ -42,7 +42,7 @@ export default function Recipients() {
         <Typography component="h2" variant="h6" color="primary" gutterBottom>
           Recipients
         </Typography>
-        <Button variant="contained" size="small" href="/new-recipient">
+        <Button variant="contained" size="small" href="/recipients/new">
           Add New
         </Button>
       </Stack>

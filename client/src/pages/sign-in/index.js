@@ -52,7 +52,7 @@ export default function SignInPage() {
         setStatus({ success: true });
         setSubmitting(false);
         resetForm({});
-        navigate("/dashboard");
+        navigate("/recipients");
       } catch (error) {
         const errorMsg = handleCustomError(error);
         setStatus({ success: false });
