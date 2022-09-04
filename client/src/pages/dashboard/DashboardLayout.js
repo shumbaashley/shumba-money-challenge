@@ -14,11 +14,11 @@ import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
 import MenuIcon from "@mui/icons-material/Menu";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
-import AccountCircle from '@mui/icons-material/AccountCircle';
+import AccountCircle from "@mui/icons-material/AccountCircle";
 import { mainListItems } from "./listItems";
 import Recipients from "./Recipients";
 import Copyright from "../../components/Copyright";
-import { Menu, MenuItem } from "@mui/material";
+import { Button, Menu, MenuItem } from "@mui/material";
 
 const drawerWidth = 240;
 
@@ -76,7 +76,6 @@ function DashboardContent() {
     setOpen(!open);
   };
 
-
   const handleMenu = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -89,7 +88,7 @@ function DashboardContent() {
     <ThemeProvider theme={mdTheme}>
       <Box sx={{ display: "flex" }}>
         <CssBaseline />
-        <AppBar position="absolute" open={open}>
+        <AppBar position="absolute" color="grey" open={open}>
           <Toolbar
             sx={{
               pr: "24px", // keep right padding when drawer closed
@@ -117,16 +116,17 @@ function DashboardContent() {
               Dashboard
             </Typography>
             <div>
-              <IconButton
+              <Button
                 size="large"
                 aria-label="account of current user"
                 aria-controls="menu-appbar"
                 aria-haspopup="true"
-                onClick={handleMenu}
                 color="inherit"
+                onClick={handleMenu}
+                startIcon={<AccountCircle />}
               >
-                <AccountCircle />
-              </IconButton>
+                <Typography variant="body2">Ashley Shumba</Typography>
+              </Button>
               <Menu
                 id="menu-appbar"
                 anchorEl={anchorEl}
