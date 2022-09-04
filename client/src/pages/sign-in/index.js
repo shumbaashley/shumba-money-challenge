@@ -16,6 +16,9 @@ import handleCustomError from "../../utils/handleCustomError";
 import CustomAlert from "../../components/Alert";
 import jwt_decode from "jwt-decode";
 import Logo from "../../components/Logo";
+import { IconButton, InputAdornment } from "@mui/material";
+import Visibility from "@mui/icons-material/Visibility";
+import VisibilityOff from "@mui/icons-material/VisibilityOff";
 
 let validationSchema = yup.object().shape({
   email: yup.string().email().required().label("Email Address"),
@@ -23,7 +26,16 @@ let validationSchema = yup.object().shape({
 });
 
 export default function SignInPage() {
+  const [showPassword, setShowPassword] = React.useState(false);
   const navigate = useNavigate();
+
+  const handleClickShowPassword = () => {
+    setShowPassword(!showPassword);
+  };
+
+  const handleMouseDownPassword = (event) => {
+    event.preventDefault();
+  };
 
   const formik = useFormik({
     initialValues: {
@@ -124,7 +136,7 @@ export default function SignInPage() {
               error={Boolean(formik.touched.email && formik.errors.email)}
               helperText={
                 formik.touched.email &&
-                formik.errors.email && <div>{formik.errors.email}</div>
+                formik.errors.email && <span>{formik.errors.email}</span>
               }
             />
 
@@ -134,7 +146,7 @@ export default function SignInPage() {
               fullWidth
               name="password"
               label="Password"
-              type="password"
+              type={showPassword ? 'text' : 'password'}
               id="password"
               autoComplete="current-password"
               onChange={formik.handleChange}
@@ -143,14 +155,27 @@ export default function SignInPage() {
               error={Boolean(formik.touched.password && formik.errors.password)}
               helperText={
                 formik.touched.password &&
-                formik.errors.password && <div>{formik.errors.password}</div>
+                formik.errors.password && <span>{formik.errors.password}</span>
               }
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton
+                      aria-label="toggle password visibility"
+                      onClick={handleClickShowPassword}
+                      onMouseDown={handleMouseDownPassword}
+                      edge="end"
+                    >
+                      {showPassword ? <VisibilityOff /> : <Visibility />}
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              }}
             />
             <Button
               type="submit"
               fullWidth
               variant="contained"
-              loading={formik.isSubmitting}
               disabled={formik.isSubmitting}
               sx={{ mt: 3, mb: 2 }}
             >
