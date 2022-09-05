@@ -17,7 +17,6 @@ export default function DeleteDialog({
 }) {
   const [loading, setLoading] = React.useState(false);
 
-  console.log(recipient);
 
   const handleClose = () => {
     setOpenDeleteDialog(false);
@@ -25,18 +24,18 @@ export default function DeleteDialog({
   const handleConfirmDelete = async () => {
     setLoading(true);
     try {
-      const response = await axios.delete(`/recipients/${recipient._id}`, {
+      await axios.delete(`/recipients/${recipient._id}`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
         },
       });
 
-      console.log(response.data);
       setLoading(false);
     } catch (error) {
       setLoading(false);
       const errorMsg = handleCustomError(error);
       console.log(errorMsg);
+      // snackbar
     }
     setOpenDeleteDialog(false);
     setReload(previousValue => !previousValue)

@@ -37,7 +37,10 @@ const validationSchema = yup.object().shape({
   emailAddress: yup.string().email().required().label("Email Address"),
   // city: yup.string().required().label("City"),
   // countryOfResidence: yup.string().required().label("Country of Residence"),
-  phoneNumber: yup.number("Not a valid phone number").required().label("Phone Number"),
+  phoneNumber: yup
+    .number("Not a valid phone number")
+    .required()
+    .label("Phone Number"),
 });
 
 const filterCitiesByCountry = (countryName) => {
@@ -70,12 +73,10 @@ export default function RecipientForm({ title }) {
   const handleChangeCountry = (event, setFieldValue) => {
     let newCountry = event.target.value;
     setFieldValue("countryOfResidence", newCountry);
-    console.log(newCountry);
     let phoneCode = getCountryPhoneCode(newCountry);
     setCountryPhoneCode(phoneCode);
     setCountry(newCountry);
     let cityOptions = filterCitiesByCountry(newCountry);
-    console.log(cityOptions);
     setCities(cityOptions);
     let initialCity = cityOptions[0].value;
     setCity(initialCity);
@@ -84,7 +85,6 @@ export default function RecipientForm({ title }) {
 
   const handleChangeCity = (event, setFieldValue) => {
     let newCity = event.target.value;
-    console.log(newCity);
     setFieldValue("city", newCity);
     setCity(newCity);
   };
@@ -113,13 +113,9 @@ export default function RecipientForm({ title }) {
 
   useEffect(() => {
     // initialize dropdown values
-
-    console.log(recipientId);
     setLoading(true);
-
     if (recipientId) {
       // when editing a recipient
-
       const getSingleRecipient = async (id) => {
         try {
           const response = await axios.get(`/recipients/${id}`, {
@@ -136,6 +132,7 @@ export default function RecipientForm({ title }) {
           setLoading(false);
           const errorMsg = handleCustomError(error);
           console.log(errorMsg);
+          // update snackbar
         }
       };
 
@@ -143,13 +140,14 @@ export default function RecipientForm({ title }) {
     } else {
       //  when creating a new recipient
       initializeValues();
+      setLoading(false);
+
     }
 
-    setLoading(false);
   }, [recipientId]);
 
   return (
-    <Container component="main">
+    <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
       <Item>
         <Box
           mt={2}
@@ -163,6 +161,7 @@ export default function RecipientForm({ title }) {
             <Typography component="h1" variant="h5">
               {title}
             </Typography>
+
             {loading && (
               <Stack
                 direction="row"
@@ -170,9 +169,10 @@ export default function RecipientForm({ title }) {
                 alignItems="center"
                 spacing={2}
               >
-                <CircularProgress color="inherit" />
+                <CircularProgress sx={{ mt: 4, mb: 4 }} color="inherit" />
               </Stack>
             )}
+
             {!loading && city && country && (
               <Formik
                 initialValues={{
@@ -194,7 +194,6 @@ export default function RecipientForm({ title }) {
                   values,
                   { setErrors, setStatus, setSubmitting, resetForm }
                 ) => {
-                  console.log(values);
                   try {
                     const {
                       firstName,
