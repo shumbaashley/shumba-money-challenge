@@ -18,6 +18,7 @@ import countriesAndCities from "../../data/";
 import getCountryPhoneCode from "../../utils/getCountryPhoneCode";
 import { styled } from "@mui/material/styles";
 import Paper from "@mui/material/Paper";
+import CustomizedSnackbars from "../../components/CustomSnackbar";
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
@@ -55,7 +56,10 @@ export default function RecipientForm() {
   const [cities, setCities] = useState([]);
   const [country, setCountry] = useState("");
   const [city, setCity] = useState("");
+  const [snackbarSeverity, setSnackbarSeverity] = useState("");
+  const [snackbarMessage, setSnackbarMessage] = useState("");
   const [countryPhoneCode, setCountryPhoneCode] = useState("");
+  const [openSnackbar, setOpenSnackbar] = useState(false);
 
   const handleChangeCountry = (event) => {
     let newCountry = event.target.value;
@@ -146,15 +150,25 @@ export default function RecipientForm() {
 
         console.log(response.data);
 
+        setSnackbarSeverity("success");
+        setSnackbarMessage("Recipient added successfully");
+        setOpenSnackbar(true);
+
         setStatus({ success: true });
         setSubmitting(false);
         resetForm({});
-        navigate("/recipients");
+        setTimeout(() => {
+          navigate("/recipients");
+        }, 2000);
       } catch (error) {
         const errorMsg = handleCustomError(error);
         setStatus({ success: false });
         setErrors({ submit: errorMsg });
         setSubmitting(false);
+
+        setSnackbarSeverity("error");
+        setSnackbarMessage(errorMsg);
+        setOpenSnackbar(true);
       }
     },
   });
@@ -332,6 +346,12 @@ export default function RecipientForm() {
           </Grid>
         </Box>
       </Item>
+      <CustomizedSnackbars
+        open={openSnackbar}
+        setOpen={setOpenSnackbar}
+        severity={snackbarSeverity}
+        message={snackbarMessage}
+      />
     </Container>
   );
 }
