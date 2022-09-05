@@ -76,7 +76,7 @@ export default function RecipientsTable() {
             alignItems="center"
             spacing={2}
           >
-            <CircularProgress color="inherit" />
+            <CircularProgress sx={{ mt: 4, mb: 4 }} color="inherit" />
           </Stack>
         )}
         {!loading && recipients.length > 0 && (
@@ -120,7 +120,7 @@ export default function RecipientsTable() {
             alignItems="center"
             spacing={2}
           >
-            <Typography variant="body1" gutterBottom>
+            <Typography variant="body1" sx={{ mt: 4, mb: 4 }} gutterBottom>
               No recipients available.
             </Typography>
           </Stack>

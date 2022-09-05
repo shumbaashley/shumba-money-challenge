@@ -1,7 +1,7 @@
 import { Fragment, useEffect, useState } from "react";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { Link as NavLink, useNavigate, useParams } from "react-router-dom";
 import { Formik } from "formik";
 import * as yup from "yup";
 import axios from "../../utils/axios";
@@ -11,6 +11,7 @@ import {
   Container,
   Grid,
   InputAdornment,
+  Link,
   MenuItem,
   Stack,
   Typography,
@@ -174,15 +175,9 @@ export default function RecipientForm({ title }) {
             )}
 
             {!loading && recipientId && !recipient && (
-              <Fragment>
-                <Typography sx={{ mt: 4, mb: 4 }} variant="body1">
+                <Typography sx={{ mt: 4, mb: 4 }} variant="body1" gutterBottom>
                   Recipient not found
                 </Typography>
-                <Box component={Link} to="/recipients">
-                  {" "}
-                  Go back
-                </Box>
-              </Fragment>
             )}
 
             {!loading && city && country && (
@@ -440,6 +435,16 @@ export default function RecipientForm({ title }) {
               </Formik>
             )}
           </Grid>
+          <Fragment>
+            <Link
+              component={NavLink}
+              underline="none"
+              color="primary"
+              to="/recipients"
+            >
+              Go back
+            </Link>
+          </Fragment>
         </Box>
       </Item>
       <CustomizedSnackbars
