@@ -21,15 +21,6 @@ npm install
 
 Rename file local.env to .env 
 
-
-Start backend application
-```bash
-npm start
-```
-
-The backend application should start on localhost port 5000
-
-
 ### 2. Frontend Application (React)
 
 ```bash
@@ -43,12 +34,23 @@ npm install
 
 Rename file local.env to .env 
 
-Start frontend application
+
+### 3. Run concurrently
+
+install concurrently
 ```bash
-npm start
+npm install -g concurrently
 ```
 
-The frontend application should start on localhost port 3000
+Start backend and frontend application with one command
+
+
+```bash
+cd client
+npm run dev
+```
+
+The backend application should start on localhost port 5000 and the frontend application on port 3000
 
 
 ## Test Users
