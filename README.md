@@ -10,6 +10,7 @@ This project consists of the frontend and backend code in separate folders clien
 
 ### 1. Backend Application (Node)
 
+Change directory to server folder
 ```bash
 cd server
 ```
@@ -23,8 +24,10 @@ Rename file local.env to .env
 
 ### 2. Frontend Application (React)
 
+Change directory to client folder
+
 ```bash
-cd client
+cd ../client
 ```
 
 Install Packages
@@ -43,10 +46,9 @@ npm install -g concurrently
 ```
 
 Start backend and frontend application with one command
-
+Run command inside root of client folder
 
 ```bash
-cd client
 npm run dev
 ```
 
