@@ -2,16 +2,18 @@ import { useEffect, useState } from "react";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import { useNavigate } from "react-router-dom";
-import { useFormik } from "formik";
+import { Formik } from "formik";
 import * as yup from "yup";
 import axios from "../../utils/axios";
 import handleCustomError from "../../utils/handleCustomError";
 import {
   Button,
+  CircularProgress,
   Container,
   Grid,
   InputAdornment,
   MenuItem,
+  Stack,
   Typography,
 } from "@mui/material";
 import countriesAndCities from "../../data/";
@@ -60,10 +62,11 @@ export default function RecipientForm() {
   const [snackbarMessage, setSnackbarMessage] = useState("");
   const [countryPhoneCode, setCountryPhoneCode] = useState("");
   const [openSnackbar, setOpenSnackbar] = useState(false);
+  const [loading, setLoading] = useState(false);
 
-  const handleChangeCountry = (event) => {
+  const handleChangeCountry = (event, setFieldValue) => {
     let newCountry = event.target.value;
-    formik.setFieldValue("countryOfResidence", newCountry);
+    setFieldValue("countryOfResidence", newCountry);
     console.log(newCountry);
     let phoneCode = getCountryPhoneCode(newCountry);
     setCountryPhoneCode(phoneCode);
@@ -75,15 +78,17 @@ export default function RecipientForm() {
     setCity(initialCity);
   };
 
-  const handleChangeCity = (event) => {
+  const handleChangeCity = (event, setFieldValue) => {
     let newCity = event.target.value;
     console.log(newCity);
-    formik.setFieldValue("city", newCity);
+    setFieldValue("city", newCity);
     setCity(newCity);
   };
 
   useEffect(() => {
     // initialize dropdown values
+    setLoading(true);
+
     let countryOptions = countriesAndCities.map((country) => {
       return { value: country.name, label: country.name };
     });
@@ -95,83 +100,15 @@ export default function RecipientForm() {
     let initialCountry = countryOptions[0].value;
     let initialCity = cityOptions[0].value;
 
-    setCountry(initialCountry);
     setCity(initialCity);
+    setCountry(initialCountry);
 
     let phoneCode = getCountryPhoneCode(initialCountry);
 
     setCountryPhoneCode(phoneCode);
+    setLoading(false);
   }, []);
 
-  const formik = useFormik({
-    initialValues: {
-      firstName: "",
-      middleName: "",
-      lastName: "",
-      emailAddress: "",
-      city: city,
-      countryOfResidence: country,
-      phoneNumber: "",
-    },
-    validationSchema,
-    onSubmit: async (
-      values,
-      { setErrors, setStatus, setSubmitting, resetForm }
-    ) => {
-      console.log(values);
-      try {
-        const {
-          firstName,
-          middleName,
-          lastName,
-          emailAddress,
-          city,
-          countryOfResidence,
-          phoneNumber,
-        } = values;
-
-        const headers = {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-          },
-        };
-        const data = {
-          firstName,
-          middleName,
-          lastName,
-          emailAddress,
-          city,
-          countryOfResidence,
-          phoneNumber: countryPhoneCode + phoneNumber,
-        };
-
-        const response = await axios.post("/recipients", data, headers);
-
-        console.log(response.data);
-
-        setSnackbarSeverity("success");
-        setSnackbarMessage("Recipient added successfully");
-        setOpenSnackbar(true);
-
-        setStatus({ success: true });
-        setSubmitting(false);
-        resetForm({});
-        setTimeout(() => {
-          navigate("/recipients");
-        }, 2000);
-      } catch (error) {
-        const errorMsg = handleCustomError(error);
-        setStatus({ success: false });
-        setErrors({ submit: errorMsg });
-        setSubmitting(false);
-
-        setSnackbarSeverity("error");
-        setSnackbarMessage(errorMsg);
-        setOpenSnackbar(true);
-      }
-    },
-  });
   return (
     <Container component="main">
       <Item>
@@ -187,162 +124,249 @@ export default function RecipientForm() {
             <Typography component="h1" variant="h5">
               Add New Recipient
             </Typography>
-            <Box
-              component="form"
-              noValidate
-              onSubmit={formik.handleSubmit}
-              sx={{
-                mt: 3,
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
+            {loading && (
+          <Stack
+            direction="row"
+            justifyContent="center"
+            alignItems="center"
+            spacing={2}
+          >
+            <CircularProgress color="inherit" />
+          </Stack>
+        )}
+           {!loading && city && country && <Formik
+              initialValues={{
+                firstName: "",
+                middleName: "",
+                lastName: "",
+                emailAddress: "",
+                city: city,
+                countryOfResidence: country,
+                phoneNumber: "",
+              }}
+              validationSchema={validationSchema}
+              onSubmit={async (
+                values,
+                { setErrors, setStatus, setSubmitting, resetForm }
+              ) => {
+                console.log(values);
+                try {
+                  const {
+                    firstName,
+                    middleName,
+                    lastName,
+                    emailAddress,
+                    city,
+                    countryOfResidence,
+                    phoneNumber,
+                  } = values;
+
+                  const headers = {
+                    headers: {
+                      "Content-Type": "application/json",
+                      Authorization: `Bearer ${localStorage.getItem(
+                        "accessToken"
+                      )}`,
+                    },
+                  };
+                  const data = {
+                    firstName,
+                    middleName,
+                    lastName,
+                    emailAddress,
+                    city,
+                    countryOfResidence,
+                    phoneNumber: countryPhoneCode + phoneNumber,
+                  };
+
+                  await axios.post("/recipients", data, headers);
+
+                  setSnackbarSeverity("success");
+                  setSnackbarMessage("Recipient added successfully");
+                  setOpenSnackbar(true);
+
+                  setStatus({ success: true });
+                  setSubmitting(false);
+                  resetForm({});
+                  setTimeout(() => {
+                    navigate("/recipients");
+                  }, 2000);
+                } catch (error) {
+                  const errorMsg = handleCustomError(error);
+                  setStatus({ success: false });
+                  setErrors({ submit: errorMsg });
+                  setSubmitting(false);
+
+                  setSnackbarSeverity("error");
+                  setSnackbarMessage(errorMsg);
+                  setOpenSnackbar(true);
+                }
               }}
             >
-              <Grid container spacing={2}>
-                <Grid item xs={12} sm={6}>
-                  <TextField
-                    fullWidth
-                    id="firstName"
-                    label="First Name"
-                    name="firstName"
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                    value={formik.values.firstName}
-                    error={Boolean(
-                      formik.touched.firstName && formik.errors.firstName
-                    )}
-                    helperText={
-                      formik.touched.firstName &&
-                      formik.errors.firstName &&
-                      formik.errors.firstName
-                    }
-                  />
-                </Grid>
-                <Grid item xs={12} sm={6}>
-                  <TextField
-                    fullWidth
-                    id="middleName"
-                    label="Middle Name"
-                    name="middleName"
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                    value={formik.values.middleName}
-                    error={Boolean(
-                      formik.touched.middleName && formik.errors.middleName
-                    )}
-                    helperText={
-                      formik.touched.middleName &&
-                      formik.errors.middleName &&
-                      formik.errors.middleName
-                    }
-                  />
-                </Grid>
-                <Grid item xs={12} sm={6}>
-                  <TextField
-                    fullWidth
-                    id="lastName"
-                    label="Last Name"
-                    name="lastName"
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                    value={formik.values.lastName}
-                    error={Boolean(
-                      formik.touched.lastName && formik.errors.lastName
-                    )}
-                    helperText={
-                      formik.touched.lastName &&
-                      formik.errors.lastName &&
-                      formik.errors.lastName
-                    }
-                  />
-                </Grid>
-                <Grid item xs={12} sm={6}>
-                  <TextField
-                    fullWidth
-                    id="emailAddress"
-                    label="Email Address"
-                    name="emailAddress"
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                    value={formik.values.emailAddress}
-                    error={Boolean(
-                      formik.touched.emailAddress && formik.errors.emailAddress
-                    )}
-                    helperText={
-                      formik.touched.emailAddress &&
-                      formik.errors.emailAddress &&
-                      formik.errors.emailAddress
-                    }
-                  />
-                </Grid>
-                <Grid item xs={12} sm={6}>
-                  <TextField
-                    fullWidth
-                    id="outlined-select-country"
-                    select
-                    label="Country"
-                    value={country}
-                    onChange={handleChangeCountry}
+              {({
+                values,
+                errors,
+                touched,
+                handleChange,
+                handleBlur,
+                handleSubmit,
+                isSubmitting,
+                setFieldValue,
+              }) => (
+                <Box
+                  component="form"
+                  noValidate
+                  onSubmit={handleSubmit}
+                  sx={{
+                    mt: 3,
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                  }}
+                >
+                  <Grid container spacing={2}>
+                    <Grid item xs={12} sm={6}>
+                      <TextField
+                        fullWidth
+                        id="firstName"
+                        label="First Name"
+                        name="firstName"
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        value={values.firstName}
+                        error={Boolean(touched.firstName && errors.firstName)}
+                        helperText={
+                          touched.firstName &&
+                          errors.firstName &&
+                          errors.firstName
+                        }
+                      />
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
+                      <TextField
+                        fullWidth
+                        id="middleName"
+                        label="Middle Name"
+                        name="middleName"
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        value={values.middleName}
+                        error={Boolean(touched.middleName && errors.middleName)}
+                        helperText={
+                          touched.middleName &&
+                          errors.middleName &&
+                          errors.middleName
+                        }
+                      />
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
+                      <TextField
+                        fullWidth
+                        id="lastName"
+                        label="Last Name"
+                        name="lastName"
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        value={values.lastName}
+                        error={Boolean(touched.lastName && errors.lastName)}
+                        helperText={
+                          touched.lastName && errors.lastName && errors.lastName
+                        }
+                      />
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
+                      <TextField
+                        fullWidth
+                        id="emailAddress"
+                        label="Email Address"
+                        name="emailAddress"
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        value={values.emailAddress}
+                        error={Boolean(
+                          touched.emailAddress && errors.emailAddress
+                        )}
+                        helperText={
+                          touched.emailAddress &&
+                          errors.emailAddress &&
+                          errors.emailAddress
+                        }
+                      />
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
+                      <TextField
+                        fullWidth
+                        id="outlined-select-country"
+                        select
+                        label="Country"
+                        value={country}
+                        onChange={(event) =>
+                          handleChangeCountry(event, setFieldValue)
+                        }
+                      >
+                        {countries.map((option) => (
+                          <MenuItem key={option.value} value={option.value}>
+                            {option.label}
+                          </MenuItem>
+                        ))}
+                      </TextField>
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
+                      <TextField
+                        fullWidth
+                        id="outlined-select-city"
+                        select
+                        label="City"
+                        value={city}
+                        onChange={(event) =>
+                          handleChangeCity(event, setFieldValue)
+                        }
+                      >
+                        {cities.map((option) => (
+                          <MenuItem key={option.value} value={option.value}>
+                            {option.label}
+                          </MenuItem>
+                        ))}
+                      </TextField>
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
+                      <TextField
+                        fullWidth
+                        id="phoneNumber"
+                        label="Phone Number"
+                        name="phoneNumber"
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        value={values.phoneNumber}
+                        InputProps={{
+                          startAdornment: (
+                            <InputAdornment position="start">
+                              {countryPhoneCode}
+                            </InputAdornment>
+                          ),
+                        }}
+                        error={Boolean(
+                          touched.phoneNumber && errors.phoneNumber
+                        )}
+                        helperText={
+                          touched.phoneNumber &&
+                          errors.phoneNumber &&
+                          errors.phoneNumber
+                        }
+                      />
+                    </Grid>
+                  </Grid>
+                  <Button
+                    type="submit"
+                    variant="contained"
+                    disabled={isSubmitting}
+                    sx={{ mt: 3, mb: 2 }}
                   >
-                    {countries.map((option) => (
-                      <MenuItem key={option.value} value={option.value}>
-                        {option.label}
-                      </MenuItem>
-                    ))}
-                  </TextField>
-                </Grid>
-                <Grid item xs={12} sm={6}>
-                  <TextField
-                    fullWidth
-                    id="outlined-select-city"
-                    select
-                    label="City"
-                    value={city}
-                    onChange={handleChangeCity}
-                  >
-                    {cities.map((option) => (
-                      <MenuItem key={option.value} value={option.value}>
-                        {option.label}
-                      </MenuItem>
-                    ))}
-                  </TextField>
-                </Grid>
-                <Grid item xs={12} sm={6}>
-                  <TextField
-                    fullWidth
-                    id="phoneNumber"
-                    label="Phone Number"
-                    name="phoneNumber"
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                    value={formik.values.phoneNumber}
-                    InputProps={{
-                      startAdornment: (
-                        <InputAdornment position="start">
-                          {countryPhoneCode}
-                        </InputAdornment>
-                      ),
-                    }}
-                    error={Boolean(
-                      formik.touched.phoneNumber && formik.errors.phoneNumber
-                    )}
-                    helperText={
-                      formik.touched.phoneNumber &&
-                      formik.errors.phoneNumber &&
-                      formik.errors.phoneNumber
-                    }
-                  />
-                </Grid>
-              </Grid>
-              <Button
-                type="submit"
-                variant="contained"
-                disabled={formik.isSubmitting}
-                sx={{ mt: 3, mb: 2 }}
-              >
-                Save
-              </Button>
-            </Box>
+                    Save
+                  </Button>
+                </Box>
+              )}
+            </Formik>}
           </Grid>
         </Box>
       </Item>

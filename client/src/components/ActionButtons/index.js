@@ -4,14 +4,11 @@ import ButtonGroup from "@mui/material/ButtonGroup";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { IconButton } from "@mui/material";
-import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 export default function ActionButtons({ recipient }) {
-  const navigate = useNavigate();
 
-  const handleClick = () => {
-    navigate(`/recipients/${recipient._id}`);
-  };
+
   const handleDelete = () => {
     alert("delete");
   };
@@ -27,7 +24,7 @@ export default function ActionButtons({ recipient }) {
       }}
     >
       <ButtonGroup size="large" aria-label="large button group">
-        <IconButton key="one" aria-label="edit" onClick={handleClick}>
+        <IconButton component={Link} to={`/recipients/${recipient._id}/edit`} key="one" aria-label="edit">
           <EditIcon />
         </IconButton>
         <IconButton key="two" aria-label="delete" onClick={handleDelete}>
