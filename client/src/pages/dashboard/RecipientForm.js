@@ -1,7 +1,7 @@
-import { useEffect, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { Formik } from "formik";
 import * as yup from "yup";
 import axios from "../../utils/axios";
@@ -131,7 +131,9 @@ export default function RecipientForm({ title }) {
         } catch (error) {
           setLoading(false);
           const errorMsg = handleCustomError(error);
-          console.log(errorMsg);
+          setSnackbarSeverity("error");
+          setSnackbarMessage(errorMsg);
+          setOpenSnackbar(true);
           // update snackbar
         }
       };
@@ -141,9 +143,7 @@ export default function RecipientForm({ title }) {
       //  when creating a new recipient
       initializeValues();
       setLoading(false);
-
     }
-
   }, [recipientId]);
 
   return (
@@ -171,6 +171,18 @@ export default function RecipientForm({ title }) {
               >
                 <CircularProgress sx={{ mt: 4, mb: 4 }} color="inherit" />
               </Stack>
+            )}
+
+            {!loading && recipientId && !recipient && (
+              <Fragment>
+                <Typography sx={{ mt: 4, mb: 4 }} variant="body1">
+                  Recipient not found
+                </Typography>
+                <Box component={Link} to="/recipients">
+                  {" "}
+                  Go back
+                </Box>
+              </Fragment>
             )}
 
             {!loading && city && country && (
