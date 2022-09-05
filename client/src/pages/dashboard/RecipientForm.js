@@ -362,7 +362,7 @@ export default function RecipientForm({ title }) {
                           fullWidth
                           id="outlined-select-country"
                           select
-                          label="Country"
+                          label="Country of Residence"
                           value={country}
                           onChange={(event) =>
                             handleChangeCountry(event, setFieldValue)
