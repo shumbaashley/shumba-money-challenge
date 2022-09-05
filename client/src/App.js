@@ -17,10 +17,17 @@ export default function App() {
     <Router>
       <Routes>
         <Route element={<PrivateRoutes />}>
-          <Route path="/" exact element={<Navigate to="/recipients" replace />} />
+          <Route
+            path="/"
+            exact
+            element={<Navigate to="/recipients" replace />}
+          />
           <Route path="recipients" exact element={<DashboardLayout />}>
-            <Route path="new" element={<RecipientForm />} />
-            <Route path=":id/edit" element={<RecipientForm />} />
+            <Route path="new" element={<RecipientForm title="Add New Recipient" />} />
+            <Route
+              path=":recipientId/edit"
+              element={<RecipientForm title="Edit Recipient" />}
+            />
             <Route path="" element={<RecipientsTable />} />
           </Route>
         </Route>

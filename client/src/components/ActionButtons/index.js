@@ -3,7 +3,7 @@ import Box from "@mui/material/Box";
 import ButtonGroup from "@mui/material/ButtonGroup";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { IconButton } from "@mui/material";
+import { IconButton, Tooltip } from "@mui/material";
 import { Link } from "react-router-dom";
 
 export default function ActionButtons({
@@ -27,18 +27,27 @@ export default function ActionButtons({
       }}
     >
       <ButtonGroup size="large" aria-label="large button group">
-        <IconButton
-        color="primary"
-          component={Link}
-          to={`/recipients/${recipient._id}/edit`}
-          key="one"
-          aria-label="edit"
-        >
-          <EditIcon />
-        </IconButton>
-        <IconButton key="two" color="error" aria-label="delete" onClick={handleDelete}>
-          <DeleteIcon />
-        </IconButton>
+        <Tooltip title="Edit Recipient">
+          <IconButton
+            color="primary"
+            component={Link}
+            to={`/recipients/${recipient._id}/edit`}
+            key="one"
+            aria-label="edit"
+          >
+            <EditIcon />
+          </IconButton>
+        </Tooltip>
+        <Tooltip title="Delete Recipient">
+          <IconButton
+            key="two"
+            color="error"
+            aria-label="delete"
+            onClick={handleDelete}
+          >
+            <DeleteIcon />
+          </IconButton>
+        </Tooltip>
       </ButtonGroup>
     </Box>
   );
