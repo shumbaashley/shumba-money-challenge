@@ -105,8 +105,8 @@ export default function RecipientForm() {
       middleName: "",
       lastName: "",
       emailAddress: "",
-      city: "",
-      countryOfResidence: "",
+      city: city,
+      countryOfResidence: country,
       phoneNumber: "",
     },
     validationSchema,
@@ -159,169 +159,179 @@ export default function RecipientForm() {
     },
   });
   return (
-    // <Grid item xs={12} md={12} lg={12}>
-    //   <Item>
-
-    //   </Item>
-    // </Grid>
-
-    <Container component="main" maxWidth="xs">
-      <Box
-        sx={{
-          marginTop: 8,
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-        }}
-      >
-        <Typography component="h1" variant="h5">
-          Add New Recipient
-        </Typography>
+    <Container component="main">
+      <Item>
         <Box
-          component="form"
-          noValidate
-          onSubmit={formik.handleSubmit}
-          sx={{ mt: 3 }}
+          mt={2}
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+          }}
         >
-          <Grid container spacing={2}>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                id="firstName"
-                label="First Name"
-                name="firstName"
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                value={formik.values.firstName}
-                error={Boolean(
-                  formik.touched.firstName && formik.errors.firstName
-                )}
-                helperText={
-                  formik.touched.firstName &&
-                  formik.errors.firstName &&
-                  formik.errors.firstName
-                }
-              />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                id="middleName"
-                label="Middle Name"
-                name="middleName"
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                value={formik.values.middleName}
-                error={Boolean(
-                  formik.touched.middleName && formik.errors.middleName
-                )}
-                helperText={
-                  formik.touched.middleName &&
-                  formik.errors.middleName &&
-                  formik.errors.middleName
-                }
-              />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                id="lastName"
-                label="Last Name"
-                name="lastName"
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                value={formik.values.lastName}
-                error={Boolean(
-                  formik.touched.lastName && formik.errors.lastName
-                )}
-                helperText={
-                  formik.touched.lastName &&
-                  formik.errors.lastName &&
-                  formik.errors.lastName
-                }
-              />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                id="emailAddress"
-                label="Email Address"
-                name="emailAddress"
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                value={formik.values.emailAddress}
-                error={Boolean(
-                  formik.touched.emailAddress && formik.errors.emailAddress
-                )}
-                helperText={
-                  formik.touched.emailAddress &&
-                  formik.errors.emailAddress &&
-                  formik.errors.emailAddress
-                }
-              />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                id="outlined-select-country"
-                select
-                label="Country"
-                value={country}
-                onChange={handleChangeCountry}
+          <Grid item xs={8} sm={8} md={5}>
+            <Typography component="h1" variant="h5">
+              Add New Recipient
+            </Typography>
+            <Box
+              component="form"
+              noValidate
+              onSubmit={formik.handleSubmit}
+              sx={{
+                mt: 3,
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+              }}
+            >
+              <Grid container spacing={2}>
+                <Grid item xs={12} sm={6}>
+                  <TextField
+                    fullWidth
+                    id="firstName"
+                    label="First Name"
+                    name="firstName"
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    value={formik.values.firstName}
+                    error={Boolean(
+                      formik.touched.firstName && formik.errors.firstName
+                    )}
+                    helperText={
+                      formik.touched.firstName &&
+                      formik.errors.firstName &&
+                      formik.errors.firstName
+                    }
+                  />
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <TextField
+                    fullWidth
+                    id="middleName"
+                    label="Middle Name"
+                    name="middleName"
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    value={formik.values.middleName}
+                    error={Boolean(
+                      formik.touched.middleName && formik.errors.middleName
+                    )}
+                    helperText={
+                      formik.touched.middleName &&
+                      formik.errors.middleName &&
+                      formik.errors.middleName
+                    }
+                  />
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <TextField
+                    fullWidth
+                    id="lastName"
+                    label="Last Name"
+                    name="lastName"
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    value={formik.values.lastName}
+                    error={Boolean(
+                      formik.touched.lastName && formik.errors.lastName
+                    )}
+                    helperText={
+                      formik.touched.lastName &&
+                      formik.errors.lastName &&
+                      formik.errors.lastName
+                    }
+                  />
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <TextField
+                    fullWidth
+                    id="emailAddress"
+                    label="Email Address"
+                    name="emailAddress"
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    value={formik.values.emailAddress}
+                    error={Boolean(
+                      formik.touched.emailAddress && formik.errors.emailAddress
+                    )}
+                    helperText={
+                      formik.touched.emailAddress &&
+                      formik.errors.emailAddress &&
+                      formik.errors.emailAddress
+                    }
+                  />
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <TextField
+                    fullWidth
+                    id="outlined-select-country"
+                    select
+                    label="Country"
+                    value={country}
+                    onChange={handleChangeCountry}
+                  >
+                    {countries.map((option) => (
+                      <MenuItem key={option.value} value={option.value}>
+                        {option.label}
+                      </MenuItem>
+                    ))}
+                  </TextField>
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <TextField
+                    fullWidth
+                    id="outlined-select-city"
+                    select
+                    label="City"
+                    value={city}
+                    onChange={handleChangeCity}
+                  >
+                    {cities.map((option) => (
+                      <MenuItem key={option.value} value={option.value}>
+                        {option.label}
+                      </MenuItem>
+                    ))}
+                  </TextField>
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <TextField
+                    fullWidth
+                    id="phoneNumber"
+                    label="Phone Number"
+                    name="phoneNumber"
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    value={formik.values.phoneNumber}
+                    InputProps={{
+                      startAdornment: (
+                        <InputAdornment position="start">
+                          {countryPhoneCode}
+                        </InputAdornment>
+                      ),
+                    }}
+                    error={Boolean(
+                      formik.touched.phoneNumber && formik.errors.phoneNumber
+                    )}
+                    helperText={
+                      formik.touched.phoneNumber &&
+                      formik.errors.phoneNumber &&
+                      formik.errors.phoneNumber
+                    }
+                  />
+                </Grid>
+              </Grid>
+              <Button
+                type="submit"
+                variant="contained"
+                disabled={formik.isSubmitting}
+                sx={{ mt: 3, mb: 2 }}
               >
-                {countries.map((option) => (
-                  <MenuItem key={option.value} value={option.value}>
-                    {option.label}
-                  </MenuItem>
-                ))}
-              </TextField>
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                id="outlined-select-city"
-                select
-                label="City"
-                value={city}
-                onChange={handleChangeCity}
-              >
-                {cities.map((option) => (
-                  <MenuItem key={option.value} value={option.value}>
-                    {option.label}
-                  </MenuItem>
-                ))}
-              </TextField>
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                id="phoneNumber"
-                label="Phone Number"
-                name="phoneNumber"
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                value={formik.values.phoneNumber}
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      {countryPhoneCode}
-                    </InputAdornment>
-                  ),
-                }}
-                error={Boolean(
-                  formik.touched.phoneNumber && formik.errors.phoneNumber
-                )}
-                helperText={
-                  formik.touched.phoneNumber &&
-                  formik.errors.phoneNumber &&
-                  formik.errors.phoneNumber
-                }
-              />
-            </Grid>
+                Save
+              </Button>
+            </Box>
           </Grid>
-          <Button
-            type="submit"
-            variant="contained"
-            disabled={formik.isSubmitting}
-            sx={{ mt: 3, mb: 2 }}
-          >
-            Save
-          </Button>
         </Box>
-      </Box>
+      </Item>
     </Container>
   );
 }
