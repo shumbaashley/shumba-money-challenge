@@ -71,6 +71,9 @@ function DashboardContent() {
   const [open, setOpen] = React.useState(false);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const navigate = useNavigate();
+  const [userInfo, setUserInfo] = React.useState(
+    JSON.parse(localStorage.getItem("userInfo")) || null
+  );
 
   const toggleDrawer = () => {
     setOpen(!open);
@@ -131,7 +134,7 @@ function DashboardContent() {
               startIcon={<AccountCircle />}
               endIcon={<KeyboardArrowDownIcon />}
             >
-              <Typography variant="body2">Ashley Shumba</Typography>
+              <Typography variant="body2">{userInfo ? `${userInfo.firstName} ${userInfo.lastName}` : 'Anonymous user'}</Typography>
             </Button>
             <Menu
               id="menu-appbar"
