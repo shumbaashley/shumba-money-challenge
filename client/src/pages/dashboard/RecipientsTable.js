@@ -16,10 +16,13 @@ import axios from "../../utils/axios";
 import handleCustomError from "../../utils/handleCustomError";
 import ActionButtons from "../../components/ActionButtons";
 import { Link } from "react-router-dom";
+import DeleteDialog from "../../components/DeleteDialog";
 
 export default function RecipientsTable() {
   const [recipients, setRecipients] = useState([]);
+  const [recipient, setRecipient] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
 
   useEffect(() => {
     const getRecipients = async () => {
@@ -56,7 +59,12 @@ export default function RecipientsTable() {
           <Typography component="h2" variant="h6" color="primary" gutterBottom>
             Recipients
           </Typography>
-          <Button component={Link} to="/recipients/new" variant="contained" size="small">
+          <Button
+            component={Link}
+            to="/recipients/new"
+            variant="contained"
+            size="small"
+          >
             Add New
           </Button>
         </Stack>
@@ -93,7 +101,11 @@ export default function RecipientsTable() {
                   <TableCell>{recipient.city}</TableCell>
                   <TableCell>{recipient.countryOfResidence}</TableCell>
                   <TableCell align="right">
-                    <ActionButtons recipient={recipient} />
+                    <ActionButtons
+                      recipient={recipient}
+                      setRecipient={setRecipient}
+                      setOpenDeleteDialog={setOpenDeleteDialog}
+                    />
                   </TableCell>
                 </TableRow>
               ))}
@@ -101,11 +113,23 @@ export default function RecipientsTable() {
           </Table>
         )}
         {!loading && recipients.length === 0 && (
-          <Typography variant="body2" gutterBottom>
-            No recipients available.
-          </Typography>
+          <Stack
+            direction="row"
+            justifyContent="center"
+            alignItems="center"
+            spacing={2}
+          >
+            <Typography variant="body1" gutterBottom>
+              No recipients available.
+            </Typography>
+          </Stack>
         )}
       </Paper>
+      <DeleteDialog
+        openDeleteDialog={openDeleteDialog}
+        setOpenDeleteDialog={setOpenDeleteDialog}
+        recipient={recipient}
+      />
     </Grid>
   );
 }

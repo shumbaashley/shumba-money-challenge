@@ -72,7 +72,7 @@ function DashboardContent() {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const navigate = useNavigate();
   const [userInfo, setUserInfo] = React.useState(
-    JSON.parse(localStorage.getItem("userInfo")) || null
+     null
   );
 
   const toggleDrawer = () => {
@@ -92,6 +92,12 @@ function DashboardContent() {
     localStorage.clear();
     navigate("/login");
   };
+
+  React.useEffect(() => {
+    const user = JSON.parse(localStorage.getItem("userInfo"))
+    setUserInfo(user)
+  }, [])
+  
 
   return (
     <Box sx={{ display: "flex" }}>

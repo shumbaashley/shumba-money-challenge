@@ -7,7 +7,6 @@ import * as yup from "yup";
 import axios from "../../utils/axios";
 import handleCustomError from "../../utils/handleCustomError";
 import {
-  Button,
   CircularProgress,
   Container,
   Grid,
@@ -21,6 +20,7 @@ import getCountryPhoneCode from "../../utils/getCountryPhoneCode";
 import { styled } from "@mui/material/styles";
 import Paper from "@mui/material/Paper";
 import CustomizedSnackbars from "../../components/CustomSnackbar";
+import LoadingButton from "@mui/lab/LoadingButton";
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
@@ -76,6 +76,7 @@ export default function RecipientForm() {
     setCities(cityOptions);
     let initialCity = cityOptions[0].value;
     setCity(initialCity);
+    setFieldValue("city", initialCity);
   };
 
   const handleChangeCity = (event, setFieldValue) => {
@@ -356,14 +357,15 @@ export default function RecipientForm() {
                       />
                     </Grid>
                   </Grid>
-                  <Button
+                  <LoadingButton
                     type="submit"
                     variant="contained"
                     disabled={isSubmitting}
+                    loading={isSubmitting}
                     sx={{ mt: 3, mb: 2 }}
                   >
                     Save
-                  </Button>
+                  </LoadingButton>
                 </Box>
               )}
             </Formik>}

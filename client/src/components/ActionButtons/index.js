@@ -6,11 +6,14 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import { IconButton } from "@mui/material";
 import { Link } from "react-router-dom";
 
-export default function ActionButtons({ recipient }) {
-
-
+export default function ActionButtons({
+  recipient,
+  setRecipient,
+  setOpenDeleteDialog,
+}) {
   const handleDelete = () => {
-    alert("delete");
+    setRecipient(recipient);
+    setOpenDeleteDialog(true);
   };
   return (
     <Box
@@ -24,10 +27,16 @@ export default function ActionButtons({ recipient }) {
       }}
     >
       <ButtonGroup size="large" aria-label="large button group">
-        <IconButton component={Link} to={`/recipients/${recipient._id}/edit`} key="one" aria-label="edit">
+        <IconButton
+        color="primary"
+          component={Link}
+          to={`/recipients/${recipient._id}/edit`}
+          key="one"
+          aria-label="edit"
+        >
           <EditIcon />
         </IconButton>
-        <IconButton key="two" aria-label="delete" onClick={handleDelete}>
+        <IconButton key="two" color="error" aria-label="delete" onClick={handleDelete}>
           <DeleteIcon />
         </IconButton>
       </ButtonGroup>

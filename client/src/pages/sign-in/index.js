@@ -1,5 +1,4 @@
 import * as React from "react";
-import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
 import Link from "@mui/material/Link";
@@ -19,6 +18,7 @@ import Logo from "../../components/Logo";
 import { IconButton, InputAdornment } from "@mui/material";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
+import LoadingButton from "@mui/lab/LoadingButton";
 
 let validationSchema = yup.object().shape({
   email: yup.string().email().required().label("Email Address"),
@@ -174,15 +174,16 @@ export default function SignInPage() {
                 ),
               }}
             />
-            <Button
+            <LoadingButton
               type="submit"
               fullWidth
               variant="contained"
               disabled={formik.isSubmitting}
+              loading={formik.isSubmitting}
               sx={{ mt: 3, mb: 2 }}
             >
               Sign In
-            </Button>
+            </LoadingButton>
             <Grid container>
               <Grid item xs>
                 <Link href="#" variant="body2">
