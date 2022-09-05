@@ -13,6 +13,7 @@ export default function DeleteDialog({
   openDeleteDialog,
   setOpenDeleteDialog,
   recipient,
+  setReload
 }) {
   const [loading, setLoading] = React.useState(false);
 
@@ -38,6 +39,7 @@ export default function DeleteDialog({
       console.log(errorMsg);
     }
     setOpenDeleteDialog(false);
+    setReload(previousValue => !previousValue)
   };
 
   return (

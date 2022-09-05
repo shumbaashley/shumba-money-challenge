@@ -22,6 +22,7 @@ export default function RecipientsTable() {
   const [recipients, setRecipients] = useState([]);
   const [recipient, setRecipient] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [reload, setReload] = useState(false);
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
 
   useEffect(() => {
@@ -45,7 +46,7 @@ export default function RecipientsTable() {
     };
 
     getRecipients();
-  }, []);
+  }, [reload]);
   return (
     <Grid item xs={12}>
       <Paper sx={{ p: 2, display: "flex", flexDirection: "column" }}>
@@ -129,6 +130,7 @@ export default function RecipientsTable() {
         openDeleteDialog={openDeleteDialog}
         setOpenDeleteDialog={setOpenDeleteDialog}
         recipient={recipient}
+        setReload={setReload}
       />
     </Grid>
   );
